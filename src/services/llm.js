@@ -1,22 +1,18 @@
 import Groq from "groq-sdk";
-import { systemPrompt, userPrompt } from "../utils/prompts.js";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-export const evaluateCv = async (cvText, context1, context2) => {
+// TODO add condition to determine is it cv or project report evaluation
+export const evaluate = async (prompt) => {
   try {
     const result = await groq.chat.completions.create({
-      model: "openai/gpt-oss-20b",
+      model: "groq/compound",
       messages: [
         {
-          role: "system",
-          content: systemPrompt(context1, context2),
-        },
-        {
           role: "user",
-          content: userPrompt(cvText),
+          content: prompt,
         },
       ],
     });

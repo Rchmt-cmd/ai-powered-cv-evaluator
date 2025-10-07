@@ -1,5 +1,5 @@
 import { getOneDocument } from "../models/document.model.js";
-import evaluatorPipeline from "../services/pipeline.js";
+import { evaluatorPipeline, summaryPipeline } from "../services/pipeline.js";
 import {
   getOneProgres,
   storeProgres,
@@ -18,15 +18,31 @@ const evaluator = async (req, res) => {
       progres: 1,
     });
 
-    evaluatorPipeline(insertProgres.insertId, cvData[0].path, "cv");
-    // const project = await evaluatorPipeline(
-    //   projectReportData[0].path,
-    //   "project"
-    // );
+    res.status(200).json({ id: insertProgres.insertId, status: "queued" });
 
-    return res
-      .status(200)
-      .json({ id: insertProgres.insertId, status: "queued" });
+    Promise.all([
+      evaluatorPipeline(insertProgres.insertId, cvData[0].path, "cv"),
+      evaluatorPipeline(
+        insertProgres.insertId,
+        projectReportData[0].path,
+        "projectReport"
+      ),
+    ])
+      .then(([cvResult, projectResult]) =>
+        summaryPipeline(
+          cvResult.cv_match_rate,
+          cvResult.cv_feedback,
+          projectResult.project_score,
+          projectResult.project_feedback,
+          insertProgres.insertId
+        )
+      )
+      .catch((err) => {
+        console.log(`❌ ${err}`);
+        // throw new Error(`pipeline failed: ${err}`);
+      });
+    // evaluatorPipeline(projectReportData[0].path, "project"); // TODO add evaluatorPipeline for projectReport
+    // summaryPipeline() // TODO add summaryPipeline for summary
   } catch (error) {
     return res.status(500).json({
       message: `failed: ${error}`,
@@ -40,7 +56,7 @@ const progresChecker = async (req, res) => {
     const result = await getOneProgres(id);
 
     if (result[0].progres === 3) {
-      return res.status(201).json({
+      return res.status(200).json({
         id: result[0].id,
         status: "completed",
         result: {
@@ -50,6 +66,12 @@ const progresChecker = async (req, res) => {
           project_feedback: result[0].project_feedback,
           overall_summary: result[0].overall_summary,
         },
+      });
+    } else if (result[0].progres === 0) {
+      return res.status(200).json({
+        id: result[0].id,
+        status: "failed",
+        error_message: result[0].error_message,
       });
     } else {
       return res.status(200).json({
