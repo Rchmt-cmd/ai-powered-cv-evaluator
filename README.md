@@ -166,7 +166,7 @@ There are two main pipelines in this project:
 
 ## ✨ Author
 
-**Rachmat Hidayat**  
-Full-Stack Developer | Cloud Enthusiast  
+**Rachmat Hidayat Abduh**  
+Full-Stack Developer
 📧 [Email: rachmath.059@gmail.com]  
 💼 [LinkedIn: www.linkedin.com/in/rchmt]
