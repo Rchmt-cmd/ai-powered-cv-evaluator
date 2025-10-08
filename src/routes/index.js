@@ -8,12 +8,6 @@ import { postDocumentController } from "../controllers/upload.contoller.js";
 
 const routes = Router();
 
-routes.get("/", async (req, res) => {
-  return res.json({
-    message: "ok",
-  });
-});
-
 routes.post(
   "/upload",
   upload.fields([

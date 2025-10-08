@@ -28,21 +28,19 @@ const evaluator = async (req, res) => {
         "projectReport"
       ),
     ])
-      .then(([cvResult, projectResult]) =>
+      .then(([cvResult, projectResult]) => {
         summaryPipeline(
           cvResult.cv_match_rate,
           cvResult.cv_feedback,
           projectResult.project_score,
           projectResult.project_feedback,
           insertProgres.insertId
-        )
-      )
+        );
+      })
       .catch((err) => {
         console.log(`❌ ${err}`);
         // throw new Error(`pipeline failed: ${err}`);
       });
-    // evaluatorPipeline(projectReportData[0].path, "project"); // TODO add evaluatorPipeline for projectReport
-    // summaryPipeline() // TODO add summaryPipeline for summary
   } catch (error) {
     return res.status(500).json({
       message: `failed: ${error}`,

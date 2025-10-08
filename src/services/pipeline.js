@@ -62,7 +62,6 @@ async function evaluatorPipeline(jobId, docPath, type) {
       });
 
     const { result } = JSON.parse(generate);
-    console.log(result);
 
     const jsonResponse =
       type === "cv"
@@ -98,17 +97,16 @@ async function summaryPipeline(
   jobId
 ) {
   try {
-    const data = {
-      cv_match_rate: cvMatchRate,
-      cv_feedback: cvFeedback,
-      project_score: projectScore,
-      project_feedback: projectFeedback,
-    };
+    const data = `
+      cv_match_rate: ${cvMatchRate},
+      cv_feedback: ${cvFeedback},
+      project_score: ${projectScore},
+      project_feedback: ${projectFeedback},
+    `;
     const userPrompt = summaryPrompt(data);
     const generate = await evaluate(userPrompt).then((res) =>
       res.replace(/```json|```/g, "").trim()
     );
-    console.log(generate);
     const { result } = JSON.parse(generate);
 
     await updateProgres(

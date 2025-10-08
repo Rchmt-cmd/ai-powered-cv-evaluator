@@ -23,11 +23,9 @@ const getRelevantContext = async (query, title) => {
       filter: {
         title: title,
       },
-      // topK: 3,
+      // topK: 1,
     });
   } catch (error) {
-    console.log(error);
-
     throw new Error(error);
   }
 };
