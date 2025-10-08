@@ -123,6 +123,35 @@ http://localhost:8000
 
 ---
 
+## 🏗️ System Architecture
+
+The system is composed of the following components:
+
+### a. Web Service (Express.js)
+
+Express.js serves as the main web service that exposes API endpoints and runs the evaluation pipeline. It provides fast and modular processing for each request.
+
+### b. RAG Service (Ragie.AI)
+
+Ragie.AI acts as a managed RAG service that retrieves the most relevant context chunks from uploaded internal documents, allowing accurate and efficient evaluation without building a custom retriever.
+
+### c. LLM Service (GroqCloud)
+
+GroqCloud provides high-speed LLM inference for real-time evaluation. It powers both the **evaluator** and **summarizer** pipelines using the Groq SDK.
+
+### d. Database (MySQL)
+
+MySQL stores document data, evaluation results, and processing progress. This ensures asynchronous task execution and prevents blocking on the web service.
+
+### e. Evaluation Pipeline
+
+There are two main pipelines in this project:
+
+1. **Evaluator Pipeline** — Evaluates the candidate’s CV and project report based on job description and rubric context.
+2. **Summarizer Pipeline** — Generates an overall summary and recommendations from the evaluator results.
+
+---
+
 ## 🧠 Pipeline Overview
 
 1. **Document Query** → Document path is retrieved from the database.
