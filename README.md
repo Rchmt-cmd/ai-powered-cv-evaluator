@@ -70,7 +70,7 @@ http://localhost:8000
 2. **Create Schema**
    Run the `.sql` script provided in `/database` folder:
    ```bash
-   mysql -u root -p cv_evaluator < ./database/schema.sql
+   mysql -u root -p < ./database/schema.sql
    ```
 
 ---
