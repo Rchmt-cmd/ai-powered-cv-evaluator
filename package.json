@@ -6,19 +6,21 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
     "groq-sdk": "^0.33.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.15.2",
     "openai": "^6.1.0",
     "pdf-parse": "^2.1.7",
     "ragie": "^1.12.2"

@@ -1,4 +1,4 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,6 +8,9 @@ const pool = mysql.createPool({
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "12345",
   port: process.env.DB_PORT || "3306",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 pool.getConnection((err, conn) => {
